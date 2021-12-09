@@ -19,8 +19,7 @@
                 <%
                     Dim cpt
                     Set rst=getAllUsers
-                    rst.MoveLast
-                    rst.MoveFirst
+                    
                     Response.Write rst.RecordCount
                     cpt=1
                     
@@ -54,6 +53,8 @@
                                 cpt=cpt+1
                                 rst.MoveNext
                                 Wend
+                                rst.close
+                                Set rst=Nothing
                             %>
                         </tbody>
                     </table>

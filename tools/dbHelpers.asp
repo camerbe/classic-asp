@@ -55,13 +55,14 @@
         strSql ="Select * From Users  Order By name"
         With rst
             
-            .CursorType = adOpenDynamic
-            .LockType = adLockOptimistic
+            .CursorType = adOpenStatic
+            .LockType = adLockBatchOptimistic
             
             .Open strSql, strConnectionString
         End With
         'rst.Open  strSql, strConnectionString
         Set getAllUsers= rst
+        
         
     End Function
 
