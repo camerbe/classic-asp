@@ -9,8 +9,8 @@
     <title>JSon</title>
 </head>
 <body>
-    <!--#include virtual="AspEtnic/inc/header.inc"-->
-   
+    <!--#include virtual="AspEtnic/inc/header.asp"-->
+    <!--#include virtual="AspEtnic/classes/aspJSON1.19.asp"-->
     <!--#include virtual="AspEtnic/inc/dbConnection.asp"-->
     <!--#include virtual="AspEtnic/tools/dbHelpers.asp"-->
     <div class="container">
@@ -24,13 +24,25 @@
                     ' Response.Write rst.RecordCount
                     ' cpt=1
                     
-                    Dim objSvrHttp,baseUrl
-                    baseUrl="https://api.coinbase.com/v2/currencies"
+                    Dim objSvrHttp,baseUrl,oJSON ,strJson
+                    baseUrl="https://jsonplaceholder.typicode.com/comments"
                     Set objSvrHttp =Server.CreateObject("Msxml2.ServerXMLHTTP.6.0")
-                    objSvrHttp.Open "Get",baseUrl,False
-                    objSvrHttp.send
+                    With objSvrHttp
+                        .Open "Get",baseUrl,False
+                        .setRequestHeader "Content-Type", "application/json"
+                        .setRequestHeader "Accept", "application/json"
+                        .send
+                        ' Set oJSON =.responseText
+                        strJson=CStr(.responseText)
+                    End With
                     
-                    Response.Write objSvrHttp.responseText
+                    Set oJSON = New aspJSON
+                    oJSON.loadJSON(strJson)
+                    Response.Write oJSON.data("email") & "<br>"
+                    Response.Write oJSON.JSONoutput()    
+                    
+                    Response.Write strJson
+                    ' Response.Write oJSON.data("title") & "<br>"
                 %>
                 
                 </div>

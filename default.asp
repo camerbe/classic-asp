@@ -9,7 +9,7 @@
     <title>Users</title>
 </head>
 <body>
-    <!--#include virtual="AspEtnic/inc/header.inc"-->
+    <!--#include virtual="AspEtnic/inc/header.asp"-->
    
     <!--#include virtual="AspEtnic/inc/dbConnection.asp"-->
     <!--#include virtual="AspEtnic/tools/dbHelpers.asp"-->
@@ -17,10 +17,17 @@
         <div class="row">
             <div class="col-md-12">
                 <%
-                    Dim cpt,lngPageCount
+                    Dim cpt,lngPageCount,intPageNum
                     Set rst=getAllUsers
+                    rst.PageSize=5
                     lngPageCount=rst.PageCount
+                    If Request.QueryString("page")="" Then
+                        intPageNum=1
+                    Else
+                        intPageNum=Cint(Request.QueryString("page"))
+                    End If
                     
+                    rst.AbsolutePage=intPageNum
                     cpt=1
                     
                     
@@ -40,7 +47,7 @@
                                     <th>Action</th>
                                 </thead>
                                 <tbody>
-                                    <% While Not rst.EOF %>
+                                    <% While Not rst.EOF And cpt <=rst.PageSize %>
                                             
                                     <tr>
                                         <td><% =cpt %></td>
@@ -48,8 +55,8 @@
                                         <td><% =rst.Fields("phone") %></td>
                                         <td><% =rst.Fields("email") %></td>
                                         <td>
-                                            ' <a href="delete.asp?id=<% =rst.Fields("userID") %>" class="text-danger" data-id="<% =rst.Fields("userID") %>" id="delete"><i class="bi bi-trash"></i></a> | 
-                                            <button   id="delete<% =rst.Fields("userID") %>" data-id="<% =rst.Fields("userID") %>"><i class="bi bi-trash"></i></button > | 
+                                            
+                                            <button class="text-danger"  id="delete<% =rst.Fields("userID") %>" data-id="<% =rst.Fields("userID") %>"><i class="bi bi-trash"></i></button > | 
                                             <a href="edit.asp?id=<% =rst.Fields("userID") %>" class="text-danger"><i class="bi bi-pencil"></i></a>
                                             
 
@@ -59,8 +66,7 @@
                                         cpt=cpt+1
                                         rst.MoveNext
                                         Wend
-                                        rst.close
-                                        Set rst=Nothing
+                                        
                                     %>
                                 </tbody>
                             </table>
@@ -70,10 +76,14 @@
                         <ul class="pagination">
                             <li class="page-item"><a class="page-link" href="#">Previous</a></li>
                             <% For i=1 to lngPageCount  %>
-                                <li class="page-item"><a class="page-link" href="default?asp=<%=i%>"><%=i%></a></li>
+                                <li class="page-item"><a class="page-link" href="default.asp?page=<%=i%>"><%=i%></a></li>
                             <% Next %>
                             <li class="page-item"><a class="page-link" href="#">Next</a></li>
                         </ul>
+                        <%
+                            rst.close
+                            Set rst=Nothing
+                        %>
                     </div>
                 </div>
                 

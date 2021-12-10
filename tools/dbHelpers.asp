@@ -55,7 +55,7 @@
         strSql ="Select * From Users  Order By name"
         With rst
             .CacheSize=5
-            .PageSize=5
+            
             .CursorType = adOpenStatic
             .LockType = adLockBatchOptimistic
             

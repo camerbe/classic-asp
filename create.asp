@@ -9,7 +9,7 @@
     <title>Users</title>
 </head>
 <body>
-    <!--#include virtual="AspEtnic/inc/header.inc"-->
+    <!--#include virtual="AspEtnic/inc/header.asp"-->
     
    
         <div class="row">
